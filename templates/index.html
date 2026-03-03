@@ -24,7 +24,11 @@ document.addEventListener("DOMContentLoaded", function() {
 {% endwith %}
 
 <nav class="navbar">
-  <div class="logo">🌱 AgroNex</div>
+  <div class="logo">
+  <a href="/">
+    <img src="/static/images/logo.png" alt="AgroNex Logo">
+  </a>
+</div>
   <div class="menu" onclick="toggleMenu()">☰</div>
     <div class="nav-links" id="navLinks">
     <a href="/">Home</a>
@@ -34,7 +38,7 @@ document.addEventListener("DOMContentLoaded", function() {
   </div>
 </nav>
 
-<section class="hero">
+<section class="hero reveal">
 
   <!-- Background Video -->
   <video autoplay muted loop playsinline class="bg-video">
@@ -45,34 +49,34 @@ document.addEventListener("DOMContentLoaded", function() {
   <div class="hero-overlay"></div>
 
   <!-- Hero Content -->
-  <div class="hero-content">
-    <h1>Smart Agriculture Revolution</div></h1>
+  <div class="hero-content zoom">
+    <h1>Smart Agriculture Revolution</h1>
     <p>Monitor Crops • Predict Yield • Optimize Irrigation</p>
   </div>
 
 </section>
 
-<section class="features">
-  <div class="card">
+<section class="features reveal">
+  <div class="card zoom">
     <h3>🌾 Crop Monitoring</h3>
     <p>Real-time health monitoring using IoT sensors.</p>
   </div>
-  <div class="card">
+  <div class="card zoom">
     <h3>🌦 Weather Forecast</h3>
     <p>AI-based climate prediction for better planning.</p>
   </div>
-  <div class="card">
+  <div class="card zoom">
     <h3>💧 Smart Irrigation</h3>
     <p>Automated irrigation system to save water.</p>
   </div>
-  <div class="card">
+  <div class="card zoom">
     <h3>📊 Yield Analytics</h3>
     <p>Data-driven insights to maximize production.</p>
   </div>
 </section>
 
 
-<footer class="footer">
+<footer class="footer reveal-left">
   <div class="footer-container">
     <div>
       <h3>🌱 AgroNex</h3>
