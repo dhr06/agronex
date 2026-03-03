@@ -1,2 +1,7 @@
-flask
+Flask
 gunicorn
+pymongo
+dnspython
+requests
+werkzeug
+certifi
