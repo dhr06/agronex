@@ -390,6 +390,13 @@ input,textarea{
     margin-top:20px;
     font-size:14px;
 }
+/* Hide hamburger on desktop */
+.menu{
+    display:none;
+    font-size:28px;
+    color:white;
+    cursor:pointer;
+}
 @media(max-width:768px){
 .nav-links{display:none;
     flex-direction:column;
@@ -404,9 +411,16 @@ input,textarea{
     display:flex;
 }
 .menu{
-    display:block;
+    display:block;   /* show hamburger only on mobile */
 }
 .hero h1{
     font-size:32px;
 }
+}
+
+/* Dashboard Navbar Solid Green */
+.dashboard-page .navbar {
+    background: #14532d !important;  /* solid green */
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
 }

@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<body>
+<body class="dashboard-page">
     {% with messages = get_flashed_messages() %}
   {% if messages %}
     <script>
@@ -27,11 +27,11 @@
 
 <nav class="navbar">
   <div class="logo">🌱 AgroNex</div>
-  <div class="nav-links" id="navLinks">
+  <div class="menu" onclick="toggleMenu()">☰</div>
+    <div class="nav-links" id="navLinks">
     <a href="/">Home</a>
     <a href="dashboard">Dashboard</a>
     <a href="about">About</a>
-    <a href="contact">Contact</a>
     <a href="logout" class="login-highlight">Logout</a>
   </div>
 </nav>
@@ -129,5 +129,6 @@ function fetchLiveData() {
 setInterval(fetchLiveData, 5000);
 fetchLiveData();
 </script>
+<script src="/static/js/main.js"></script>
 </body>
 </html>
