@@ -98,10 +98,13 @@ body{
 }
 
 /* Logo */
-.logo img {
-    height: 65px;   /* adjust size here */
-    width: 120px;
-    display: block;
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: rgb(255, 255, 255);
+}
+a{
+    text-decoration: none;
 }
 /* Nav container */
 .nav-links {

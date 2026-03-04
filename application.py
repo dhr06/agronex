@@ -3,9 +3,22 @@ import requests
 from pymongo import MongoClient
 from werkzeug.security import generate_password_hash, check_password_hash
 import certifi
+import random
+from flask_mail import Mail, Message
 
 app = Flask(__name__)
 app.secret_key = "agronex_secret_key"
+# ===============================
+# EMAIL CONFIG
+# ===============================
+
+app.config["MAIL_SERVER"] = "smtp.gmail.com"
+app.config["MAIL_PORT"] = 587
+app.config["MAIL_USE_TLS"] = True
+app.config["MAIL_USERNAME"] = "dhruvraj0602@gmail.com"
+app.config["MAIL_PASSWORD"] = "anarhzllsrcdzung"
+
+mail = Mail(app)
 
 # ===============================
 # MongoDB Connection
@@ -86,6 +99,82 @@ def register():
     return render_template("register.html")
 
 # ===============================
+# FORGOT PASSWORD (SEND OTP)
+# ===============================
+@app.route("/forgot-password", methods=["GET", "POST"])
+def forgot_password():
+
+    if request.method == "POST":
+
+        email = request.form.get("email").lower()
+        user = users_collection.find_one({"email": email})
+
+        if not user:
+            flash("No account found with this email.", "forgot_error")
+            return redirect(url_for("forgot_password"))
+
+        otp = str(random.randint(100000, 999999))
+
+        session["reset_email"] = email
+        session["otp"] = otp
+
+        msg = Message(
+            "AgroNex Password Reset OTP",
+            sender=app.config["MAIL_USERNAME"],
+            recipients=[email]
+        )
+
+        msg.body = f"Your AgroNex OTP is: {otp}"
+        mail.send(msg)
+
+        flash("OTP sent to your email.")
+        return redirect(url_for("verify_otp"))
+
+    return render_template("forgot_password.html")
+
+# ===============================
+# VERIFY OTP
+# ===============================
+@app.route("/verify-otp", methods=["GET", "POST"])
+def verify_otp():
+
+    if request.method == "POST":
+
+        entered_otp = request.form.get("otp")
+
+        if entered_otp == session.get("otp"):
+            return redirect(url_for("reset_password"))
+
+        flash("Invalid OTP", "forgot_error")
+
+    return render_template("verify_otp.html")
+
+# ===============================
+# RESET PASSWORD
+# ===============================
+@app.route("/reset-password", methods=["GET", "POST"])
+def reset_password():
+
+    if "reset_email" not in session:
+        return redirect("/login")
+
+    if request.method == "POST":
+        new_password = request.form.get("password")
+
+        hashed_password = generate_password_hash(new_password)
+
+        users_collection.update_one(
+            {"email": session["reset_email"]},
+            {"$set": {"password": hashed_password}}
+        )
+
+        session.pop("reset_email", None)
+
+        flash("Password updated successfully!")
+        return redirect("/login")
+
+    return render_template("reset_password.html")
+# ===============================
 # GOOGLE LOGIN
 # ===============================
 @app.route("/google-login", methods=["POST"])
@@ -119,7 +208,7 @@ def dashboard():
 @app.route("/logout")
 def logout():
     session.clear()
-    flash("You have been logged out successfully!")
+    flash("You have been logged out successfully!", "logout")
     return redirect(url_for("home"))
 
 # ===============================

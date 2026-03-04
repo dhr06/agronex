@@ -9,7 +9,7 @@
 </head>
 <body>
   {% with messages = get_flashed_messages() %}
-{% if messages %}
+{% if messages and 'logged out' in messages[0]|lower %}
 <script>
 document.addEventListener("DOMContentLoaded", function() {
   Swal.fire({
@@ -24,11 +24,10 @@ document.addEventListener("DOMContentLoaded", function() {
 {% endwith %}
 
 <nav class="navbar">
-  <div class="logo">
   <a href="/">
-    <img src="/static/images/logo.png" alt="AgroNex Logo">
+    <div class="logo">🌱 AgroNex</div>
   </a>
-</div>
+
   <div class="menu" onclick="toggleMenu()">☰</div>
     <div class="nav-links" id="navLinks">
     <a href="/">Home</a>

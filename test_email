@@ -1,0 +1,56 @@
+from flask import Flask
+from flask_mail import Mail, Message
+
+app = Flask(__name__)
+
+# ===============================
+# MAIL CONFIGURATION
+# ===============================
+
+app.config["MAIL_SERVER"] = "smtp.gmail.com"
+app.config["MAIL_PORT"] = 587
+app.config["MAIL_USE_TLS"] = True
+app.config["MAIL_USE_SSL"] = False
+
+# ⚠️ Replace with your Gmail
+app.config["MAIL_USERNAME"] = "dhruvraj0602@gmail.com"
+
+# ⚠️ Replace with Gmail APP PASSWORD (not Gmail password)
+app.config["MAIL_PASSWORD"] = "anarhzllsrcdzung"
+
+app.config["MAIL_DEFAULT_SENDER"] = "dhruvraj0602@gmail.com"
+
+mail = Mail(app)
+
+# ===============================
+# HOME ROUTE
+# ===============================
+
+@app.route("/")
+def home():
+    return "Flask Mail Test Server Running"
+
+# ===============================
+# TEST EMAIL ROUTE
+# ===============================
+
+@app.route("/test-email")
+def test_email():
+
+    msg = Message(
+        subject="AgroNex Email Test",
+        recipients=["yourgmail@gmail.com"]  # send to yourself
+    )
+
+    msg.body = "Hello 👋\n\nThis is a test email from AgroNex Flask system."
+
+    mail.send(msg)
+
+    return "✅ Email sent successfully!"
+
+# ===============================
+# RUN SERVER
+# ===============================
+
+if __name__ == "__main__":
+    app.run(debug=True)
