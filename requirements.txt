@@ -5,4 +5,4 @@ dnspython
 requests
 werkzeug
 certifi
-flask_mail
+Flask-Mail
