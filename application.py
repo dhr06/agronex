@@ -118,14 +118,21 @@ def forgot_password():
         session["reset_email"] = email
         session["otp"] = otp
 
-        msg = Message(
-            "AgroNex Password Reset OTP",
-            sender=app.config["MAIL_USERNAME"],
-            recipients=[email]
-        )
+        try:
+            msg = Message(
+                "AgroNex Password Reset OTP",
+                sender=app.config["MAIL_USERNAME"],
+                recipients=[email]
+            )
 
-        msg.body = f"Your AgroNex OTP is: {otp}"
-        mail.send(msg)
+            msg.body = f"Your AgroNex OTP is: {otp}"
+
+            mail.send(msg)
+
+        except Exception as e:
+            print("MAIL ERROR:", e)
+            flash("Email service failed. Try again later.")
+            return redirect(url_for("forgot_password"))
 
         flash("OTP sent to your email.")
         return redirect(url_for("verify_otp"))
