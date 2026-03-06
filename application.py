@@ -12,11 +12,20 @@ app.secret_key = "agronex_secret_key"
 # EMAIL CONFIG
 # ===============================
 
+import os
+
 app.config["MAIL_SERVER"] = "smtp.gmail.com"
-app.config["MAIL_PORT"] = 587
+app.config["MAIL_PORT"] = 465
 app.config["MAIL_USE_TLS"] = True
-app.config["MAIL_USERNAME"] = "dhruvraj0602@gmail.com"
-app.config["MAIL_PASSWORD"] = "anarhzllsrcdzung"
+app.config["MAIL_USE_SSL"] = False
+app.config["MAIL_USERNAME"] = os.environ.get("MAIL_USERNAME")
+app.config["MAIL_PASSWORD"] = os.environ.get("MAIL_PASSWORD")
+app.config["MAIL_DEFAULT_SENDER"] = os.environ.get("MAIL_USERNAME")
+
+# important settings
+app.config["MAIL_MAX_EMAILS"] = 5
+app.config["MAIL_ASCII_ATTACHMENTS"] = False
+app.config["MAIL_TIMEOUT"] = 10
 
 mail = Mail(app)
 
@@ -121,13 +130,13 @@ def forgot_password():
         try:
             msg = Message(
                 "AgroNex Password Reset OTP",
-                sender=app.config["MAIL_USERNAME"],
                 recipients=[email]
             )
 
             msg.body = f"Your AgroNex OTP is: {otp}"
+            with mail.connect() as conn:
+                conn.send(msg)
 
-            mail.send(msg)
 
         except Exception as e:
             print("MAIL ERROR:", e)
@@ -138,7 +147,6 @@ def forgot_password():
         return redirect(url_for("verify_otp"))
 
     return render_template("forgot_password.html")
-
 # ===============================
 # VERIFY OTP
 # ===============================
@@ -245,7 +253,7 @@ def live_data():
     response = requests.get(url)
     data = response.json()
 
-    print("API RESPONSE:", data)   # 👈 ADD THIS
+    print("API RESPONSE:", data)
 
     temperature = data["main"]["temp"]
     humidity = data["main"]["humidity"]
