@@ -12,20 +12,11 @@ app.secret_key = "agronex_secret_key"
 # EMAIL CONFIG
 # ===============================
 
-import os
-
 app.config["MAIL_SERVER"] = "smtp.gmail.com"
-app.config["MAIL_PORT"] = 465
+app.config["MAIL_PORT"] = 587
 app.config["MAIL_USE_TLS"] = True
-app.config["MAIL_USE_SSL"] = False
-app.config["MAIL_USERNAME"] = os.environ.get("MAIL_USERNAME")
-app.config["MAIL_PASSWORD"] = os.environ.get("MAIL_PASSWORD")
-app.config["MAIL_DEFAULT_SENDER"] = os.environ.get("MAIL_USERNAME")
-
-# important settings
-app.config["MAIL_MAX_EMAILS"] = 5
-app.config["MAIL_ASCII_ATTACHMENTS"] = False
-app.config["MAIL_TIMEOUT"] = 10
+app.config["MAIL_USERNAME"] = "dhruvraj0602@gmail.com"
+app.config["MAIL_PASSWORD"] = "anarhzllsrcdzung"
 
 mail = Mail(app)
 
@@ -130,13 +121,13 @@ def forgot_password():
         try:
             msg = Message(
                 "AgroNex Password Reset OTP",
+                sender=app.config["MAIL_USERNAME"],
                 recipients=[email]
             )
 
             msg.body = f"Your AgroNex OTP is: {otp}"
-            with mail.connect() as conn:
-                conn.send(msg)
 
+            mail.send(msg)
 
         except Exception as e:
             print("MAIL ERROR:", e)
@@ -147,6 +138,7 @@ def forgot_password():
         return redirect(url_for("verify_otp"))
 
     return render_template("forgot_password.html")
+
 # ===============================
 # VERIFY OTP
 # ===============================
@@ -243,24 +235,36 @@ def contact():
 # LIVE WEATHER FROM INTERNET
 # ===============================
 
-API_KEY = "591f15e70fa0468192595912260303"
+API_KEY = "61fb3c95b0f48946d623027121744921"
 CITY = "Ahmedabad"
 
 @app.route("/live-data")
 def live_data():
-    url = f"http://api.openweathermap.org/data/2.5/weather?q={CITY}&appid={API_KEY}&units=metric"
-    
+
+    url = f"https://api.openweathermap.org/data/2.5/weather?q=Ahmedabad&appid={API_KEY}&units=metric"
+
     response = requests.get(url)
     data = response.json()
 
-    print("API RESPONSE:", data)
+    print(data)
 
     temperature = data["main"]["temp"]
     humidity = data["main"]["humidity"]
+    wind = data["wind"]["speed"]
 
     return jsonify({
         "temperature": temperature,
-        "humidity": humidity
+        "humidity": humidity,
+        "wind": wind
+    })
+    temperature = data["main"]["temp"]
+    humidity = data["main"]["humidity"]
+    wind = data["wind"]["speed"]
+
+    return jsonify({
+        "temperature": temperature,
+        "humidity": humidity,
+        "wind": wind
     })
 # ===============================
 # RUN

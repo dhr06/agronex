@@ -1,80 +1,246 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Dashboard - AgroNex</title>
-<link rel="stylesheet" href="/static/css/style.css">
-</head>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<body class="dashboard-page">
-    {% with messages = get_flashed_messages() %}
-  {% if messages %}
-    <script>
-      document.addEventListener("DOMContentLoaded", function() {
-        Swal.fire({
-          title: "Logged Out 👋",
-          text: "{{ messages[0] }}",
-          icon: "success",
-          confirmButtonText: "OK",
-          confirmButtonColor: "#22c55e",
-          background: "#ffffff",
-          color: "#14532d",
-          backdrop: "rgba(0,0,0,0.6)"
-        });
-      });
-    </script>
-  {% endif %}
-{% endwith %}
 
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<title>AgroNex Ultimate Dashboard</title>
+
+<link rel="stylesheet" href="/static/css/style.css">
+
+<link rel="stylesheet"
+href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+</head>
+
+<body class="dashboard-page">
 <nav class="navbar">
   <a href="/">
     <div class="logo">🌱 AgroNex</div>
   </a>
+
   <div class="menu" onclick="toggleMenu()">☰</div>
-    <div class="nav-links" id="navLinks">
+
+  <div class="nav-links" id="navLinks">
     <a href="/">Home</a>
-    <a href="dashboard">Dashboard</a>
-    <a href="about">About</a>
-    <a href="logout" class="login-highlight">Logout</a>
+    <a href="/dashboard">Dashboard</a>
+    <a href="/about">About</a>
+    <a href="/logout" class="login-highlight">Logout</a>
   </div>
-</nav>
+</nav><br><br>
+<div class="layout">
 
-<div class="dashboard">
-  <div class="dashboard-header">
-        <h2></h2>
-    </div>
+<!-- SIDEBAR -->
 
-    <!-- Dashboard Header -->
-    <div class="dashboard-header">
-        <h2>🌿 Farm Overview</h2>
-        <input type="text" placeholder="Search data...">
-    </div>
+<div class="sidebar" id="sidebar">
 
-    <!-- Summary Cards -->
-    <div class="summary-cards">
-        <div class="summary-card">
-            <h4>Fields</h4>
-            <p>14</p>
-        </div>
-        <div class="summary-card">
-            <h4>Active Jobs</h4>
-            <p>8</p>
-        </div>
-        <div class="summary-card">
-            <h4>Total Area</h4>
-            <p>54 Ha</p>
-        </div>
-        <div class="summary-card">
-            <h4>AI Alerts</h4>
-            <p>3</p>
-        </div>
-    </div>
+<h2></h2>
 
-    <!-- Main Dashboard Cards -->
-    <div class="dashboard-grid">
+<ul>
 
-        <div class="dash-card">
-            <h3>🌱 Soil Moisture</h3>
-            <div class="card-value green" id="moisture">65%</div>
+<li onclick="showSection('dashboard')" class="active">Dashboard</li>
+<li onclick="showSection('fields')">Fields</li>
+<li onclick="showSection('jobs')">Jobs</li>
+<li onclick="showSection('weather')">Weather</li>
+<li onclick="showSection('team')">Team</li>
+<li onclick="showSection('vehicles')">Vehicles</li>
+<li onclick="showSection('settings')">Settings</li>
+
+</ul>
+
+</div>
+
+
+<!-- MAIN -->
+
+<div class="main">
+
+<!-- TOPBAR -->
+
+<div class="topbar">
+
+<button onclick="toggleMenu()" class="menuBtn">☰</button>
+
+
+
+</div>
+
+
+<!-- ================= DASHBOARD ================= -->
+
+<div id="dashboard" class="section active">
+
+<div class="stats">
+
+<div class="card">
+<h3>Fields</h3>
+<h1 id="fieldCount">0</h1>
+<p>Total Fields</p>
+</div>
+
+<div class="card">
+<h3>Active Jobs</h3>
+<h1 id="activeJobs">0</h1>
+<p>Ongoing</p>
+</div>
+
+<div class="card">
+<h3>Jobs Due</h3>
+<h1 id="jobsDue">0</h1>
+<p>Pending</p>
+</div>
+
+<div class="card">
+<h3>Completed</h3>
+<h1 id="jobsCompleted">0</h1>
+<p>This Month</p>
+</div>
+
+</div>
+
+
+<!-- MAP + CROPS -->
+
+<div class="grid">
+
+<div class="mapCard">
+
+
+
+<div id="map"></div>
+
+</div>
+
+
+<div class="cropCard">
+
+<h3>Crop Distribution</h3>
+
+<canvas id="cropChart"></canvas>
+
+</div>
+
+</div>
+
+
+<!-- ANALYTICS -->
+
+<div class="analytics">
+
+<div class="costCard">
+
+<h3>Cost Analysis</h3>
+
+<canvas id="costChart"></canvas>
+
+</div>
+
+
+<div class="activityCard">
+
+<h3>Recent Activities</h3>
+
+<ul>
+
+<li>🚜 Harrowing completed – ABY Farm</li>
+<li>🌾 Wheat planted – YNS Farm</li>
+<li>💧 Irrigation started – ARD Farm</li>
+<li>🌱 Soil check completed</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- ================= FIELDS ================= -->
+
+<div id="fields" class="section">
+
+<h2>Fields</h2>
+
+<input id="fieldName" placeholder="Field Name">
+<input id="cropType" placeholder="Crop Type">
+
+<button onclick="addField()">Add Field</button>
+
+<table>
+
+<thead>
+<tr>
+<th>Field</th>
+<th>Crop</th>
+<th>Action</th>
+</tr>
+</thead>
+
+<tbody id="fieldTable"></tbody>
+
+</table>
+
+</div>
+
+
+<!-- ================= JOBS ================= -->
+
+<div id="jobs" class="section">
+
+<h2>Jobs</h2>
+
+<input id="jobName" placeholder="Job Name">
+<button onclick="addJob()">Add Job</button>
+
+
+<h3 style="margin-top:20px;">Active Jobs</h3>
+
+<table>
+
+<thead>
+<tr>
+<th>Job</th>
+<th>Action</th>
+</tr>
+</thead>
+
+<tbody id="jobTable"></tbody>
+
+</table>
+
+
+<h3 style="margin-top:30px;">Completed Jobs</h3>
+
+<table>
+
+<thead>
+<tr>
+<th>Job</th>
+<th>Status</th>
+</tr>
+</thead>
+
+<tbody id="completedJobTable"></tbody>
+
+</table>
+
+</div>
+
+
+<!-- ================= WEATHER ================= -->
+
+<div id="weather" class="section">
+
+<h2>Weather</h2>
+
+<div class="dash-card">
+            <h3>🌬 Wind</h3>
+            <div class="card-value green" id="wind">--</div>
             <p>Balanced soil hydration supporting strong root growth.</p>
         </div>
 
@@ -90,47 +256,54 @@
             <p>Favorable atmospheric moisture improving plant health.</p>
         </div>
 
-        <div class="dash-card">
-            <h3>📈 Yield Prediction</h3>
-            <div class="card-value purple">+30%</div>
-            <p>AI-based analytics forecasting increased productivity.</p>
-        </div>
+</div>
 
-    </div>
+
+<!-- ================= TEAM ================= -->
+
+<div id="team" class="section">
+
+<h2>Team Members</h2>
+
+<input id="memberName" placeholder="Member Name">
+<button onclick="addMember()">Add Member</button>
+
+<ul id="teamList"></ul>
 
 </div>
 
 
-<footer class="footer">
-  <div class="footer-container">
-    <div>
-      <h3>🌱 AgroNex</h3>
-      <p>Smart Farming powered by AI & IoT technologies to increase productivity and sustainability.</p>
-    </div>
-     <div></div>
-    <div></div>
-    <div>
-      <h4>Contact</h4>
-      <p>Email: support@agronex.com</p>
-      <p>Phone: +91 9499741881</p>
-    </div>
-  </div>
-  <p class="copyright">© 2026 AgroNex | All Rights Reserved</p>
-</footer>
+<!-- ================= VEHICLES ================= -->
 
-<script>
-function fetchLiveData() {
-    fetch("/live-data")
-        .then(response => response.json())
-        .then(data => {
-            document.getElementById("temperature").innerText = data.temperature + "°C";
-            document.getElementById("humidity").innerText = data.humidity + "%";
-        });
-}
+<div id="vehicles" class="section">
 
-setInterval(fetchLiveData, 5000);
-fetchLiveData();
-</script>
+<h2>Vehicles</h2>
+
+<input id="vehicleName" placeholder="Vehicle Name">
+<button onclick="addVehicle()">Add Vehicle</button>
+
+<ul id="vehicleList"></ul>
+
+</div>
+
+
+<!-- ================= SETTINGS ================= -->
+
+<div id="settings" class="section">
+
+<h2>Settings</h2>
+
+<p>Farm Location: India</p>
+<p>Language: English</p>
+
+</div>
+
+
+</div>
+
+</div>
+
 <script src="/static/js/main.js"></script>
+
 </body>
 </html>
