@@ -1,0 +1,22 @@
+[33m8da3654[m[33m ([m[1;36mHEAD[m[33m)[m HEAD@{0}: pull origin main --rebase (start): checkout 8da365449a61b4682d9846f2c03e80258c5a7855
+[33m79ea2d4[m[33m ([m[1;31morigin/main[m[33m, [m[1;32mmain[m[33m)[m HEAD@{1}: commit: Updated navbar fix
+[33m9646932[m HEAD@{2}: commit: Updated navbar fix
+[33m2fdd5cc[m HEAD@{3}: commit: Fixed forgot password mail error
+[33m260596c[m HEAD@{4}: commit: Updated navbar fix
+[33mbe48402[m HEAD@{5}: commit: Updated navbar fix
+[33m39c70de[m HEAD@{6}: commit: Updated navbar fix
+[33m2faf4dc[m HEAD@{7}: commit: Updated navbar fix
+[33md175693[m HEAD@{8}: commit: Updated navbar fix
+[33m17e286c[m HEAD@{9}: commit: Updated navbar fix
+[33m95e4fdf[m HEAD@{10}: pull origin main --rebase (finish): returning to refs/heads/main
+[33m95e4fdf[m HEAD@{11}: pull origin main --rebase (pick): Renamed app to application
+[33m9abbcd4[m HEAD@{12}: pull origin main --rebase (pick): Fixed file extensions
+[33mfbbe893[m HEAD@{13}: pull origin main --rebase (pick): Fixed Procfile name
+[33m7563b1a[m HEAD@{14}: pull origin main --rebase (start): checkout 7563b1a2c31e49fc71e65a90836262fffcbd61d7
+[33m32f9824[m HEAD@{15}: commit: Renamed app to application
+[33m61dfdd6[m HEAD@{16}: commit: Fixed file extensions
+[33m19c236e[m HEAD@{17}: commit: Fixed Procfile name
+[33md81567b[m HEAD@{18}: Branch: renamed refs/heads/main to refs/heads/main
+[33md81567b[m HEAD@{20}: Branch: renamed refs/heads/main to refs/heads/main
+[33md81567b[m HEAD@{22}: Branch: renamed refs/heads/main to refs/heads/main
+[33md81567b[m HEAD@{24}: commit (initial): Initial commit - AgroNex Django project
